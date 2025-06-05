@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.krishhh.roomdemo.databinding.ActivityMainBinding
 import com.krishhh.roomdemo.databinding.DialogUpdateBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Launched a coroutine block and fetch all employee
         lifecycleScope.launch {
-            employeeDao.fetchAllEmployee().collect {
+            employeeDao.fetchAllEmployees().collect {
                 Log.d("exactemployee", "$it")
                 val list = ArrayList(it)
                 setupListOfDataIntoRecyclerView(list, employeeDao)
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
         if (employeesList.isNotEmpty()) {
 
-
             // Adapter class is initialized and list is passed in the param.
             val itemAdapter = ItemAdapter(employeesList, { updateId ->
                 updateRecordDialog(updateId, employeeDao)
@@ -60,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
             }
             // Set the LayoutManager that this RecyclerView will use.
             binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
@@ -80,6 +77,7 @@ class MainActivity : AppCompatActivity() {
     fun addRecord(employeeDao: EmployeeDao) {
         val name = binding?.etName?.text.toString()
         val email = binding?.etEmailId?.text.toString()
+
         if (name.isNotEmpty() && email.isNotEmpty()) {
             lifecycleScope.launch {
                 employeeDao.insert(EmployeeEntity(name = name, email = email))
@@ -101,7 +99,7 @@ class MainActivity : AppCompatActivity() {
      * Create an employeeDao param for accessing method from the dao
      * We also launch a coroutine block to fetch the selected employee and update it
      */
-    fun updateRecordDialog(id: Int, employeeDao: EmployeeDao) {
+    private fun updateRecordDialog(id: Int, employeeDao: EmployeeDao) {
         val updateDialog = Dialog(this, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         /*Set the screen content from a layout resource.
@@ -117,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.tvUpdate.setOnClickListener {
 
             val name = binding.etUpdateName.text.toString()
@@ -125,8 +124,7 @@ class MainActivity : AppCompatActivity() {
             if (name.isNotEmpty() && email.isNotEmpty()) {
                 lifecycleScope.launch {
                     employeeDao.update(EmployeeEntity(id, name, email))
-                    Toast.makeText(applicationContext, "Record Updated.", Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(applicationContext, "Record Updated.", Toast.LENGTH_LONG).show()
                     updateDialog.dismiss() // Dialog will be dismissed
                 }
             } else {
@@ -144,13 +142,12 @@ class MainActivity : AppCompatActivity() {
         updateDialog.show()
     }
 
-
     /**
      * Method is used to show the Alert Dialog and delete the selected employee.
      * We add an id to get the selected position and an employeeDao param to get the
      * methods from the dao interface then launch a coroutine block to call the methods
      */
-    fun deleteRecordAlertDialog(id: Int, employeeDao: EmployeeDao, employee: EmployeeEntity) {
+    private fun deleteRecordAlertDialog(id: Int, employeeDao: EmployeeDao, employee: EmployeeEntity) {
         val builder = AlertDialog.Builder(this)
         //set title for alert dialog
         builder.setTitle("Delete Record")
@@ -170,14 +167,13 @@ class MainActivity : AppCompatActivity() {
 
                 dialogInterface.dismiss() // Dialog will be dismissed
             }
-
         }
-
 
         //performing negative action
-        builder.setNegativeButton("No") { dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, _ ->
             dialogInterface.dismiss() // Dialog will be dismissed
         }
+
         // Create the AlertDialog
         val alertDialog: AlertDialog = builder.create()
         // Set other dialog properties

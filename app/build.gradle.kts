@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 }
 
 android {
@@ -50,11 +50,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
-    // Room and lifecycle dependencies
-    implementation("androidx.room:room-runtime:2.3.0")
-    kapt("androidx.room:room-compiler:2.3.0")
-    // Kotlin extensions for coroutine support with room
-    implementation("androidx.room:room-ktx:2.3.0")
-    // Kotlin extension for coroutine support with activities
+    implementation("androidx.room:room-runtime:2.7.1")
+    implementation("androidx.room:room-ktx:2.7.1")
+    ksp("androidx.room:room-compiler:2.7.1")
+
     implementation("androidx.activity:activity-ktx:1.3.1")
 }

@@ -5,20 +5,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.krishhh.roomdemo.databinding.ItemsRowBinding
+import java.util.ArrayList
 
-/** Todo 2
- * We have the @param [items] to represent the list that populates the adapter
- * The @param [updateListener] to listen to the edit icon an get the positions id
- * The @param [deleteListener] to listen to the delete icon and get the positions id
- **/
 class ItemAdapter(
     private val items: ArrayList<EmployeeEntity>,
     private val updateListener: (id: Int) -> Unit,
     private val deleteListener: (id: Int) -> Unit
-) :
-    RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
-
-
+) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     /**
      * Inflates the item views which is designed in xml layout file
      *
@@ -27,9 +20,7 @@ class ItemAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemsRowBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
+            ItemsRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -52,26 +43,20 @@ class ItemAdapter(
 
         // Updating the background color according to the odd/even positions in list.
         if (position % 2 == 0) {
-            holder.llMain.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.colorLightGray
-                )
-            )
+            holder.llMain.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorLightGray))
         } else {
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
         }
-// Todo 3 set onclick listem on the icon and invoke update and delete listeners
-        //start
+
         holder.ivEdit.setOnClickListener {
-            updateListener(item.id)
+            updateListener.invoke(item.id)
         }
 
         holder.ivDelete.setOnClickListener {
-            deleteListener(item.id)
+            deleteListener.invoke(item.id)
         }
     }
-//end
+
     /**
      * Gets the number of items in the list
      */
