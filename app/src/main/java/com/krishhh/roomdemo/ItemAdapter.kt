@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.krishhh.roomdemo.databinding.ItemsRowBinding
-import java.util.ArrayList
 
 class ItemAdapter(
     private val items: ArrayList<EmployeeEntity>,
